@@ -1,0 +1,69 @@
+{
+  "project_path": ".",
+  "epsg": "EPSG:32632",
+  "cellsize_m": 10,
+  "buffer_m": 2000,
+  "terrain_aware": false,
+  "dem_path": "demo_dem.asc",
+  "turbines": [
+    {
+      "id": "T1",
+      "x": 500250,
+      "y": 5000250,
+      "hub_height_m": 120,
+      "rotor_diameter_m": 140
+    },
+    {
+      "id": "T2",
+      "x": 500450,
+      "y": 5000700,
+      "hub_height_m": 120,
+      "rotor_diameter_m": 140
+    },
+    {
+      "id": "T3",
+      "x": 500700,
+      "y": 5000400,
+      "hub_height_m": 120,
+      "rotor_diameter_m": 140
+    },
+    {
+      "id": "T4",
+      "x": 500950,
+      "y": 5000900,
+      "hub_height_m": 120,
+      "rotor_diameter_m": 140
+    },
+    {
+      "id": "T5",
+      "x": 501200,
+      "y": 5000500,
+      "hub_height_m": 120,
+      "rotor_diameter_m": 140
+    },
+    {
+      "id": "T6",
+      "x": 501400,
+      "y": 5001200,
+      "hub_height_m": 120,
+      "rotor_diameter_m": 140
+    },
+    {
+      "id": "T7",
+      "x": 501600,
+      "y": 5000650,
+      "hub_height_m": 120,
+      "rotor_diameter_m": 140
+    },
+    {
+      "id": "T8",
+      "x": 501750,
+      "y": 5001550,
+      "hub_height_m": 120,
+      "rotor_diameter_m": 140
+    }
+  ],
+  "output": {
+    "format": "both"
+  }
+}

@@ -1,0 +1,56 @@
+name: windows-desktop
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install engine deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r engine/requirements.txt pyinstaller pytest
+      - name: Engine smoke test
+        run: pytest engine/tests/test_demo_smoke.py
+      - name: Build engine.exe
+        run: pyinstaller --noconfirm --name engine --onefile engine/run_engine.py
+
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+
+      - name: Build Tauri installer
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: 'Wind Shadow Studio ${{ github.ref_name }}'
+          releaseDraft: true
+          prerelease: false
+
+      - name: Checksums
+        shell: pwsh
+        run: |
+          Get-ChildItem src-tauri/target/release/bundle -Recurse -File | ForEach-Object {
+            $hash = (Get-FileHash $_.FullName -Algorithm SHA256).Hash
+            "$hash  $($_.Name)" | Out-File -FilePath checksums.txt -Append
+          }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wind-shadow-windows-artifacts
+          path: |
+            src-tauri/target/release/bundle/**/*
+            checksums.txt
